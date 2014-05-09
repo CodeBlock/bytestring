@@ -4,17 +4,17 @@ import Keys._
 object build extends Build {
   type Sett = Project.Setting[_]
 
-  val scalazVersion = "7.0.0"
+  val scalazVersion = "7.0.6"
 
   def specsVersion(scalaVersion: String) =
     if (scalaVersion startsWith "2.9") "1.12.4.1" else "1.12.3"
 
   lazy val standardSettings = Defaults.defaultSettings ++ List[Sett](
     organization := "org.purefn"
-  , scalaVersion := "2.10.1"
-  , crossScalaVersions := List("2.9.2", "2.9.3", "2.10.1")
+  , scalaVersion := "2.10.4"
+  , crossScalaVersions := List("2.9.2", "2.9.3", "2.10.1", "2.10.4", "2.11.0")
   , resolvers += "Sonatype Releases" at "https://oss.sonatype.org/content/repositories/releases"
-  , scalacOptions <++= (scalaVersion).map((sv: String) ⇒ List("-deprecation", "-unchecked", "-Ywarn-value-discard") ++ (if(sv.contains("2.10")) None else Some("-Ydependent-method-types")))
+  , scalacOptions <++= (scalaVersion).map((sv: String) ⇒ List("-deprecation", "-unchecked", "-Ywarn-value-discard") ++ (if(sv.contains("2.10") || sv.contains("2.11")) None else Some("-Ydependent-method-types")))
   , scalacOptions in (Compile, doc) <++= (baseDirectory in LocalProject("bytestring")).map {
       bd ⇒ List("-sourcepath", bd.getAbsolutePath, "-doc-source-url", "https://github.com/purefn/bytestring/€{FILE_PATH}.scala")
     }
