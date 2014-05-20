@@ -40,7 +40,7 @@ trait Spec
   }
 
 //   override implicit val defaultParameters = set((minTestsOk, 1000))
-  override implicit val defaultParameters = display((minTestsOk, 1000))
+//  override implicit val defaultParameters = display((minTestsOk, 1000))
 
   def checkAll(name: String, props: Properties)(implicit p: Parameters) {
     addFragments(name + " " + props.name,

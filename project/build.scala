@@ -1,13 +1,11 @@
 import sbt._
 import Keys._
+import Tools.onVersion
 
 object build extends Build {
   type Sett = Project.Setting[_]
 
   val scalazVersion = "7.0.6"
-
-  def specsVersion(scalaVersion: String) =
-    if (scalaVersion startsWith "2.9") "1.12.4.1" else "1.12.3"
 
   lazy val standardSettings = Defaults.defaultSettings ++ List[Sett](
     organization := "org.purefn"
@@ -51,10 +49,13 @@ object build extends Build {
   , dependencies = List(bytestring, scalacheckBinding % "test")
   , settings     = standardSettings ++ List[Sett](
       name := "bytestring-tests"
-    , libraryDependencies <++= scalaVersion(v => List(
-        "org.specs2" %% "specs2" % specsVersion(v) % "test"
-      , "org.scalaz" %% "scalaz-scalacheck-binding" % scalazVersion % "test"
-      ))
-    )
+    , libraryDependencies <++=
+        onVersion(
+          all = Seq("org.scalaz" %% "scalaz-scalacheck-binding" % scalazVersion % "test")
+        , on292 = Seq("org.specs2" %% "specs2" % "1.12.4.1" % "test")
+        , on210 = Seq("org.specs2" %% "specs2" % "1.14" % "test")
+        , on211 = Seq("org.specs2" %% "specs2" % "2.3.11" % "test")
+        )
+      )
   )
 }
