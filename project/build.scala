@@ -12,7 +12,7 @@ object build extends Build {
   lazy val standardSettings = Defaults.defaultSettings ++ List[Sett](
     organization := "org.purefn"
   , scalaVersion := "2.10.4"
-  , crossScalaVersions := List("2.9.2", "2.9.3", "2.10.1", "2.10.4", "2.11.0")
+  , crossScalaVersions := List("2.9.2", "2.9.3", "2.10.4", "2.11.0")
   , resolvers += "Sonatype Releases" at "https://oss.sonatype.org/content/repositories/releases"
   , scalacOptions <++= (scalaVersion).map((sv: String) ⇒ List("-deprecation", "-unchecked", "-Ywarn-value-discard") ++ (if(sv.contains("2.10") || sv.contains("2.11")) None else Some("-Ydependent-method-types")))
   , scalacOptions in (Compile, doc) <++= (baseDirectory in LocalProject("bytestring")).map {
